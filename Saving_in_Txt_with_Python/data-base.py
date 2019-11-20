@@ -8,7 +8,10 @@ while True:
             return False
     if check_if_txt_exists() == False:
         file = open('contacts.txt', 'w')
-    print('{:^20}'.format('1 - ADD\n2 - CHANGE\n3 - DELETE\n4 - SEARCH\n5 - EXIT'))
+    print('=-' * 10)
+    print('Select one of the options below:')
+    print('{:^17}\n{:^20}\n{:^20}\n{:^20}\n{:^18}'.format('1 - ADD', '2 - CHANGE', '3 - DELETE', '4 - SEARCH', '5 - EXIT'))
+    print('=-' * 10)
     option = input('What you wanna do? ').strip()
     contacts = {}
     dic_aux = {}
