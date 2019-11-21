@@ -22,16 +22,20 @@ while True:
     
     def get_datas_from_txt():
         check_if_txt_exists()
-        file = open('contacts.txt', 'r')
-        lines = file.readlines()
-        for line in lines:
-            line_split = line.split('-')
-            name = line_split[0]
-            name_string = ''.join(line_split[0]) # Name to string so we can use the upper and strip methods
-            name = name_string.upper().strip()
-            phoneNumber = line_split[1]
-            dic_aux[name] = phoneNumber
-        file.close()
+        is_empty()
+        if is_empty() == True:
+            print('No contacts found!')
+        else:
+            file = open('contacts.txt', 'r')
+            lines = file.readlines()
+            for line in lines:
+                line_split = line.split('-')
+                name = line_split[0]
+                name_string = ''.join(line_split[0]) # Name to string so we can use the upper and strip methods
+                name = name_string.upper().strip()
+                phoneNumber = line_split[1]
+                dic_aux[name] = phoneNumber
+            file.close()
     
     def setDatas_in_Empty_File():
         check_if_txt_exists()
@@ -40,61 +44,70 @@ while True:
         dic_aux[name] = phoneNumber
         add_to_dict()
         send_to_database()
-        get_datas_from_txt()
     
     def setDatas_in_not_Empty_File():
         check_if_txt_exists()
-        get_datas_from_txt()
-        name = input('Name: ').upper().strip()
-        phoneNumber = input('Phone number: ')
-        dic_aux[name] = phoneNumber
-        add_to_dict()
-        send_to_database()
-        get_datas_from_txt()
-        file.close()
+        is_empty()
+        if is_empty() == False:
+            get_datas_from_txt()
+            name = input('Name: ').upper().strip()
+            phoneNumber = input('Phone number: ')
+            dic_aux[name] = phoneNumber
+            add_to_dict()
+            send_to_database()
+            get_datas_from_txt()
+            file.close()
+        else:
+            setDatas_in_Empty_File()
     
     def change():
         check_if_txt_exists()
-        get_datas_from_txt()
-        add_to_dict()
-        contact_to_change = input('Contact name you wanna change: ').upper().strip()
-        for key in list(dic_aux.keys()):
-            if key == contact_to_change:
-                new_name = input('New name: ').upper().strip()
-                new_phone_number = input('New phone number: ')
-                dic_aux[new_name] = dic_aux.pop(key)
-                dic_aux[new_name] = new_phone_number
-                break   
-        else:
-            print(f'"{contact_to_change}" WAS NOT FOUND!')
-            print()
+        is_empty()
+        if is_empty() == False:
+            get_datas_from_txt()
+            add_to_dict()
+            contact_to_change = input('Contact name you wanna change: ').upper().strip()
+            for key in list(dic_aux.keys()):
+                if key == contact_to_change:
+                    new_name = input('New name: ').upper().strip()
+                    new_phone_number = input('New phone number: ')
+                    dic_aux[new_name] = dic_aux.pop(key)
+                    dic_aux[new_name] = new_phone_number
+                    break   
+            else:
+                print(f'"{contact_to_change}" WAS NOT FOUND!')
+                print()
     
     def delete():
         check_if_txt_exists()
-        get_datas_from_txt()
-        add_to_dict()
-        contact_to_delete = input('Contact name you wanna delete: ').upper().strip()
-        for key in list(dic_aux.keys()):
-            if contact_to_delete == key:
-                del dic_aux[key]
-                break
-        else:
-            print(f'"{contact_to_delete}" WAS NOT FOUND!')
-            print()        
+        is_empty()
+        if is_empty() == False:
+            get_datas_from_txt()
+            add_to_dict()
+            contact_to_delete = input('Contact name you wanna delete: ').upper().strip()
+            for key in list(dic_aux.keys()):
+                if contact_to_delete == key:
+                    del dic_aux[key]
+                    break
+            else:
+                print(f'"{contact_to_delete}" WAS NOT FOUND!')
+                print()        
     
     def search():
         check_if_txt_exists()
-        get_datas_from_txt()
-        add_to_dict()
-        contact_to_search = input('Who u looking for? ').strip().upper()
-        print()
-        for key, value in dic_aux.items():
-            if contact_to_search == key:
-                print(f'Here it is >>>>> Name: {key.capitalize()} ---- Phone number: {value}')
-                break
-        else:
-            print(f'"{contact_to_search}" WAS NOT FOUND!')
+        is_empty()
+        if is_empty() == False:
+            get_datas_from_txt()
+            add_to_dict()
+            contact_to_search = input('Who u looking for? ').strip().upper()
             print()
+            for key, value in dic_aux.items():
+                if contact_to_search == key:
+                    print(f'Here it is >>>>> Name: {key.capitalize()} ---- Phone number: {value}')
+                    break
+            else:
+                print(f'"{contact_to_search}" WAS NOT FOUND!')
+                print()
     
     def add_to_dict():
         check_if_txt_exists()
@@ -122,7 +135,12 @@ while True:
             print('$' * 50)
             print()
         else:
+            print('$' * 50)
+            print()
             print('YOUR CONTACTS LIST IS EMPTY!')
+            print()
+            print('$' * 50)
+            print()
     
     def send_to_database():
         add_to_dict()
@@ -143,35 +161,22 @@ while True:
     option = input('What you wanna do? ').strip()
     
     # Here starts the conditions
-    if option == '1' and is_empty() == True:
-        setDatas_in_Empty_File()
-        send_to_database() 
-    elif option == '1' and is_empty() == False:
+    if option == '1':
         setDatas_in_not_Empty_File()
         send_to_database()
-    
-    elif option == '2' and is_empty() == False:
-        change() 
+    elif option == '2':
+        change()
         send_to_database()
-    elif option == '2' and is_empty() == True:
-        print('No contacts found!')
-    
-    elif option == '3' and is_empty() == False:
+    elif option == '3':
         delete()
-        send_to_database()        
-    elif option == '3' and is_empty() == True:
-        print('No contacts found!')
-    
-    elif option == '4' and is_empty() == False:
-        search()
-    elif option == '4' and is_empty() == True:
-        print('No contacts found!')
-    
+        send_to_database()
+    elif option == '4':
+        search()    
+        send_to_database()
     elif option == '5':
         print('Finishing...')
         sleep(3)
         print('Finished.')
         break
-    
     else:
         print('unavailable option')
