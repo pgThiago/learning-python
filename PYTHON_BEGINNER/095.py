@@ -1,5 +1,3 @@
-'''Aprimore o exercicio 093 para que ele funcione com vários jogadores
-incluindo um sistema de visualização de detalhes do aproveitamento de cada jogador'''
 jogadores = []
 jogador = {}
 cod = 0
@@ -33,7 +31,7 @@ while True:
     for jogador in jogadores:
         if jogador["Código"] == mostrar:
             print(f'--LEVANTAMENTO DO JOGADOR {jogador["Nome"]}:')
-            for g in range(len(gols)):
+            for g in range(len(jogador['Gols'])):
                 print(f'No jogo {g + 1} fez {jogador["Gols"][g]} gols.')
             break
     else:
